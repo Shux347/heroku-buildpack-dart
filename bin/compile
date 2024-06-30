@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+# Set the Dart SDK URL
+DART_SDK_URL=${DART_SDK_URL:-"https://storage.googleapis.com/dart-archive/channels/stable/release/3.4.4/sdk/dartsdk-linux-x64-release.zip"}
+
+echo "Downloading Dart SDK from $DART_SDK_URL"
+curl -o dart-sdk.zip $DART_SDK_URL
+unzip dart-sdk.zip -d ./
+rm dart-sdk.zip
+
+export PATH=$(pwd)/dart-sdk/bin:$PATH
+
+if [ -f "$BUILD_DIR/pubspec.yaml" ]; then
+  cd $BUILD_DIR
+  dart pub get
+fi
